@@ -131,7 +131,7 @@ function createRecipeCards() {
     {
       recipeCard.classList.add("hidden");
     }
-    let page = recipeData[recipes[0]]['page-name'];
+    let page = recipeData[recipes[i]]['page-name'];
     router.addPage(page, function() {
       document.querySelector('.section--recipe-cards').classList.remove('shown');
       document.querySelector('.section--recipe-expand').classList.add('shown');
@@ -196,6 +196,15 @@ function bindEscKey() {
    * if the escape key is pressed, use your router to navigate() to the 'home'
    * page. This will let us go back to the home page from the detailed page.
    */
+  document.addEventListener('keydown', keyHandler);
+}
+
+function keyHandler(event)
+{
+  if(event.key == "Escape")
+  {
+    router.navigate("home", false);
+  }
 }
 
 /**
@@ -217,5 +226,15 @@ function bindPopstate() {
    * so your navigate() function does not add your going back action to the history,
    * creating an infinite loop
    */
-  window.onpopstate = function(event) {router.navigate(window.history.state, true);};
+  window.onpopstate = function(event)
+  {
+    if(!event.state)
+    {
+      router.navigate("home", true);
+    }
+    else
+    {
+      router.navigate(event.state["hash"], true);
+    }
+  }
 }
